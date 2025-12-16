@@ -14,36 +14,36 @@ export const portfolioData = {
   projects: [
     {
       id: 1,
-      title: "멀티 클라우드 인프라 자동화",
-      summary: "Terraform 기반 AWS와 Azure 인프라 프로비저닝",
-      techStack: ["Terraform", "AWS", "Azure", "Docker", "GitHub Actions"],
+      title: "MoA",
+      summary: "인지증 인식 개선 프로젝트",
+      techStack: ["Next.js", "Naver Cloud", "Docker"],
       architectureDiagram: "로드 밸런싱을 포함한 멀티 클라우드 배포 아키텍처",
-      githubUrl: "https://github.com/username/multi-cloud-infra",
+      githubUrl: "https://github.com/PublicIsDJ/moa-app.git",
       blogUrl: "https://blog.example.com/multi-cloud-automation",
     },
     {
       id: 2,
-      title: "쿠버네티스 모니터링 스택",
-      summary: "Prometheus와 Grafana를 활용한 완전한 관측성 솔루션",
-      techStack: ["Kubernetes", "Prometheus", "Grafana", "Helm", "AlertManager"],
+      title: "Drone Dilivery Project",
+      summary: "Parrot드론을 PWA 환경에서의 제어를 통한 자동 배달 서비스",
+      techStack: ["Parrot SDK", "Next.js", "Doker"],
       architectureDiagram: "메트릭 수집 파이프라인을 포함한 K8s 모니터링 아키텍처",
-      githubUrl: "https://github.com/username/k8s-monitoring",
+      githubUrl: "https://github.com/DroneDelivery2/Embedded_PJ.git",
       blogUrl: "https://blog.example.com/k8s-monitoring-setup",
     },
     {
       id: 3,
-      title: "GitOps 기반 CI/CD 파이프라인",
-      summary: "ArgoCD와 Jenkins를 활용한 자동화된 배포 파이프라인",
-      techStack: ["ArgoCD", "Jenkins", "Docker", "Kubernetes", "Git"],
+      title: "REVEYE",
+      summary: "상품 리뷰를 쉽게 이해하는 혁신적 웹서비스",
+      techStack: ["Python", "FireBase", "API", "Git"],
       architectureDiagram: "자동화된 테스트와 배포를 포함한 GitOps 워크플로우",
-      githubUrl: "https://github.com/username/gitops-pipeline",
+      githubUrl: "https://github.com/OSP-PJ/RevKeyRec.git",
       blogUrl: "https://blog.example.com/gitops-implementation",
     },
     {
       id: 4,
-      title: "서버리스 데이터 처리",
-      summary: "AWS Lambda와 SQS를 활용한 이벤트 기반 데이터 파이프라인",
-      techStack: ["AWS Lambda", "SQS", "DynamoDB", "CloudWatch", "Python"],
+      title: "스마트 신호등 시스템",
+      summary: "라즈베리파이와 UART 통신을 통한 스마트 신호 시스템 구축",
+      techStack: ["UART", "Raspberry pi", "OpenCV", "Python"],
       architectureDiagram: "데이터 처리를 위한 서버리스 이벤트 기반 아키텍처",
       githubUrl: "https://github.com/username/serverless-data",
       blogUrl: "https://blog.example.com/serverless-data-pipeline",
@@ -52,13 +52,13 @@ export const portfolioData = {
 
   skills: {
     "인프라 & 클라우드": [
-      "AWS", "Docker"
+      "AWS", "Docker", "AWS Certified Cloud Practitioner"
     ],
     "CI/CD & 자동화": [
-      "Jenkins", "GitHub Actions", "ArgoCD", "Ansible", "Helm", "GitOps"
+      
     ],
     "백엔드 & 네트워킹": [
-      "Node.js", "Python", "Go", "PostgreSQL", "Redis", "Nginx", "Load Balancing"
+      "Node.js", "Python", "PostgreSQL", "Load Balancing"
     ],
   },
 

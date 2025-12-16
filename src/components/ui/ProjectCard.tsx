@@ -43,7 +43,7 @@ export default function ProjectCard({
       </div>
 
       {/* Content */}
-      <div className="px-8 py-8 space-y-8" style={{ paddingLeft: '4px', paddingRight: '4px' }}>
+      <div className="px-8 py-12 space-y-8" style={{ paddingLeft: '4px', paddingRight: '4px', paddingTop: '8px', paddingBottom: '8px' }}>
         <div style={{ marginLeft: '16px', marginRight: '16px' }}>
           <h3 className="text-xl font-bold text-black mb-2 group-hover:text-blue-600 transition-colors duration-300">
             {title}
@@ -54,11 +54,11 @@ export default function ProjectCard({
         </div>
 
         {/* Tech Stack */}
-        <div className="flex flex-wrap gap-2" style={{ marginLeft: '16px', marginRight: '16px' }}>
+        <div className="flex flex-wrap gap-3" style={{ marginLeft: '16px', marginRight: '16px' }}>
           {techStack.map((tech) => (
             <span
               key={tech}
-              className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+              className="px-5 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
             >
               {tech}
             </span>

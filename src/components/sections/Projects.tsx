@@ -23,8 +23,10 @@ export default function Projects() {
             <div className="w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500" />
           </div>
           <p className="text-xl text-gray-600 max-w-3xl leading-relaxed">
-            확장성, 안정성, 그리고 현대적인 데브옵스 관행을 보여주는 
-            클라우드 네이티브 솔루션과 인프라 자동화 프로젝트들을 소개합니다.
+            다양한 프로젝트의 FE,BE,임베디드 환경을 직접 구축해보며, 
+            시스템 가용성과 확장성에 대해 끊임없이 고민해왔습니다. 
+            이러한 ‘서비스를 지탱하는 기술’에 대한 열정으로 
+            이제는 클라우드 엔지니어로서의 전문성을 키우고자 합니다.
           </p>
         </motion.div>
 

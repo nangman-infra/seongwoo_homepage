@@ -70,7 +70,8 @@ export default function Skills() {
                       }}
                       viewport={{ once: true }}
                       whileHover={{ scale: 1.05 }}
-                      className="px-4 py-2 bg-white text-gray-700 rounded-full text-sm font-medium shadow-sm hover:shadow-md hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 cursor-default"
+                      className="bg-white text-gray-700 rounded-full text-sm font-medium shadow-sm hover:shadow-md hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 cursor-default"
+                      style={{ paddingLeft: '6px', paddingRight: '6px', paddingTop: '3px', paddingBottom: '3px' }}
                     >
                       {skill}
                     </motion.span>
@@ -87,15 +88,20 @@ export default function Skills() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mt-16 p-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl"
+          className="p-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl w-full"
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '20px' }}
         >
-          <h3 className="text-2xl font-bold text-black mb-4">
+          <h3 className="text-2xl font-bold text-black mb-4" style={{ textAlign: 'center' }}>
             끊임없는 학습
           </h3>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            클라우드 환경은 빠르게 발전하고 있으며, 저는 새로운 기술, 모범 사례, 
-            그리고 업계 표준을 따라가는 데 전념하고 있습니다. 현재 고급 쿠버네티스 패턴과 
-            멀티 클라우드 전략을 탐구하고 있습니다.
+          <p 
+            className="text-gray-600"
+            style={{ textAlign: 'center', maxWidth: '800px' }}
+          >
+            화려한 최신 기술을 쫓기 이전에, 네트워크와 운영체제 등 공학의 뿌리를 단단히 다지는 데 집중하겠습니다. <br />
+            서버를 띄우는 것에 그치지 않고, '왜 이 아키텍처여야 하는가?'를 끊임없이 고민하며 논리적인 설계 능력을 기르겠습니다. <br />
+            실패를 두려워하지 않고 다양한 환경을 직접 구축하고 부숴보며, 이론을 실전 지식으로 체화해 나가겠습니다. <br />
+            어제보다 더 견고하고 효율적인 시스템을 만들기 위해 집요하게 파고드는 끈기 있는 엔지니어가 되겠습니다.
           </p>
         </motion.div>
       </div>
