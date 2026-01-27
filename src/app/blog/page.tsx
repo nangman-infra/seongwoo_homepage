@@ -4,77 +4,9 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Clock, Cloud, Terminal, ChevronDown } from "lucide-react";
+import { fetchBlogPosts, BlogPost } from "@/lib/blog";
 
-const mockPosts = [
-  {
-    id: 1,
-    title: "AWS EC2 인스턴스 완벽 가이드: 초보자부터 실무까지",
-    excerpt: "EC2 인스턴스의 기본 개념부터 보안 그룹 설정, Auto Scaling까지 실무에서 바로 적용할 수 있는 내용을 정리했습니다.",
-    category: "AWS",
-    thumbnail: null,
-    readTime: 8,
-    url: "https://tistory.com/1",
-    featured: true,
-    date: "2024-12-10",
-  },
-  {
-    id: 2,
-    title: "Docker 컨테이너 네트워킹 심화",
-    excerpt: "Docker의 브릿지, 호스트, 오버레이 네트워크 모드를 비교하고 실제 프로젝트에서의 활용법을 다룹니다.",
-    category: "Docker",
-    thumbnail: null,
-    readTime: 12,
-    url: "https://tistory.com/2",
-    featured: true,
-    date: "2024-12-05",
-  },
-  {
-    id: 3,
-    title: "Kubernetes 트러블슈팅: Pod CrashLoopBackOff 해결하기",
-    excerpt: "실무에서 자주 마주치는 CrashLoopBackOff 에러의 원인 분석과 단계별 해결 방법을 공유합니다.",
-    category: "Troubleshooting",
-    thumbnail: null,
-    readTime: 6,
-    url: "https://tistory.com/3",
-    featured: true,
-    date: "2024-11-28",
-  },
-  {
-    id: 4,
-    title: "Terraform으로 AWS 인프라 자동화하기",
-    excerpt: "IaC(Infrastructure as Code) 도구인 Terraform을 활용해 AWS 리소스를 코드로 관리하는 방법을 알아봅니다.",
-    category: "AWS",
-    thumbnail: null,
-    readTime: 10,
-    url: "https://tistory.com/4",
-    featured: false,
-    date: "2024-11-20",
-  },
-  {
-    id: 5,
-    title: "Linux 시스템 모니터링 명령어 총정리",
-    excerpt: "top, htop, vmstat, iostat 등 시스템 관리자가 알아야 할 필수 모니터링 명령어를 정리했습니다.",
-    category: "Linux",
-    thumbnail: null,
-    readTime: 5,
-    url: "https://tistory.com/5",
-    featured: false,
-    date: "2024-11-15",
-  },
-  {
-    id: 6,
-    title: "CI/CD 파이프라인 구축: GitHub Actions 실전 가이드",
-    excerpt: "GitHub Actions를 활용한 자동화된 빌드, 테스트, 배포 파이프라인 구축 과정을 단계별로 설명합니다.",
-    category: "Projects",
-    thumbnail: null,
-    readTime: 15,
-    url: "https://tistory.com/6",
-    featured: false,
-    date: "2024-11-10",
-  },
-];
-
-const categories = ["All", "AWS", "Docker", "Troubleshooting", "Linux", "Projects"];
+const categories = ["All", "AWS", "Docker", "Kubernetes", "Linux", "DevOps", "Projects", "Troubleshooting", "Tech"];
 
 function SkeletonCard() {
   return (
@@ -118,7 +50,7 @@ function FallbackThumbnail({ category }: { category: string }) {
   );
 }
 
-function BlogCard({ post, index }: { post: typeof mockPosts[0]; index: number }) {
+function BlogCard({ post, index }: { post: BlogPost; index: number }) {
   return (
     <motion.a
       href={post.url}
@@ -155,7 +87,7 @@ function BlogCard({ post, index }: { post: typeof mockPosts[0]; index: number })
   );
 }
 
-function FeaturedCard({ post, index }: { post: typeof mockPosts[0]; index: number }) {
+function FeaturedCard({ post, index }: { post: BlogPost; index: number }) {
   return (
     <motion.a
       href={post.url}
@@ -200,14 +132,25 @@ function FeaturedCard({ post, index }: { post: typeof mockPosts[0]; index: numbe
 export default function BlogPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [posts, setPosts] = useState<typeof mockPosts>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setPosts(mockPosts);
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    async function loadPosts() {
+      try {
+        setIsLoading(true);
+        const blogPosts = await fetchBlogPosts();
+        setPosts(blogPosts);
+        setError(null);
+      } catch (err) {
+        console.error('블로그 포스트를 불러오는데 실패했습니다:', err);
+        setError('블로그 포스트를 불러오는데 실패했습니다.');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadPosts();
   }, []);
 
   const featuredPosts = posts.filter((p) => p.featured);
@@ -268,6 +211,10 @@ export default function BlogPage() {
             <div className="grid md:grid-cols-3 gap-5">
               {[1, 2, 3].map((i) => <SkeletonCard key={i} />)}
             </div>
+          ) : error ? (
+            <div className="text-center py-16 text-red-500">
+              {error}
+            </div>
           ) : (
             <div className="grid md:grid-cols-3 gap-5">
               {featuredPosts.map((post, index) => (
@@ -306,6 +253,10 @@ export default function BlogPage() {
           {isLoading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {[1, 2, 3, 4, 5, 6].map((i) => <SkeletonCard key={i} />)}
+            </div>
+          ) : error ? (
+            <div className="text-center py-16 text-red-500">
+              {error}
             </div>
           ) : filteredPosts.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
