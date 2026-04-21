@@ -1,5 +1,14 @@
 import { NextResponse } from 'next/server';
 
+interface RSSItem {
+  title: string;
+  link: string;
+  description: string;
+  pubDate: string;
+  category: string;
+  guid: string;
+}
+
 // 읽기 시간 계산 (대략적으로 분당 200단어 기준)
 function calculateReadTime(content: string): number {
   const wordsPerMinute = 200;
@@ -12,24 +21,6 @@ function extractPlainText(html: string): string {
   if (!html) return '';
   
   let text = html;
-  
-  // 먼저 HTML 엔티티를 디코딩 (이게 가장 중요!)
-  const entityMap: { [key: string]: string } = {
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&quot;': '"',
-    '&#39;': "'",
-    '&apos;': "'",
-    '&nbsp;': ' ',
-    '&hellip;': '...',
-    '&mdash;': '—',
-    '&ndash;': '–',
-    '&rsquo;': "'",
-    '&lsquo;': "'",
-    '&rdquo;': '"',
-    '&ldquo;': '"'
-  };
   
   // 엔티티 변환 (순서 중요: &amp;를 마지막에 처리)
   text = text.replace(/&lt;/g, '<');
@@ -119,13 +110,13 @@ function mapCategory(category: string): string {
 
 // 간단한 XML 파싱 함수
 function parseRSSXML(xmlString: string) {
-  const items: any[] = [];
+  const items: RSSItem[] = [];
   
   // <item> 태그들을 찾아서 파싱
   const itemMatches = xmlString.match(/<item[^>]*>([\s\S]*?)<\/item>/g);
   
   if (itemMatches) {
-    itemMatches.forEach((itemXML, index) => {
+    itemMatches.forEach((itemXML) => {
       const title = itemXML.match(/<title[^>]*><!\[CDATA\[(.*?)\]\]><\/title>/)?.[1] || 
                    itemXML.match(/<title[^>]*>(.*?)<\/title>/)?.[1] || 'Untitled';
       

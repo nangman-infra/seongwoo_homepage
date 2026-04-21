@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto w-full">
         <div className="text-center">
         <h3 className="text-3xl font-bold mb-4">
-          Let's Build Something <span className="text-blue-400">Amazing</span>
+          Let&apos;s Build Something <span className="text-blue-400">Amazing</span>
         </h3>
         
         <p className="text-gray-300 text-lg mb-8 mx-auto text-center">
