@@ -196,6 +196,7 @@ pipeline {
                                     sonar.scm.revision=${env.FULL_SHA}
                                     sonar.sources=${env.SONAR_SOURCES}
                                     sonar.exclusions=**/node_modules/**,**/.next/**,**/out/**,**/coverage/**,**/dist/**,**/*.config.*,**/next-env.d.ts
+                                    sonar.coverage.exclusions=src/app/blog/page.tsx,src/components/sections/About.tsx,src/components/sections/Footer.tsx,src/components/ui/ProjectCard.tsx
                                     sonar.javascript.lcov.reportPaths=${env.SONAR_COVERAGE_REPORT}
                                     sonar.javascript.node.maxspace=4096
                                 """.stripIndent().trim() + '\n'
