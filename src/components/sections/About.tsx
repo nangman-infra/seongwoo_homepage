@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { portfolioData } from "@/data/portfolio";
 
@@ -34,7 +35,7 @@ export default function About() {
               viewport={{ once: true }}
               className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start"
             >
-              {["클라우드", "ROS", "네트워크", "운영체제", "시스템 프로그래밍"].map((keyword, index) => (
+              {["클라우드", "ROS", "네트워크", "운영체제", "시스템 프로그래밍"].map((keyword) => (
                 <span
                   key={keyword}
                   className="px-4 py-2 bg-gray-100 text-gray-800 rounded-full text-sm font-medium"
@@ -55,10 +56,13 @@ export default function About() {
           >
             <div className="relative">
               <div className="w-80 h-80 rounded-3xl overflow-hidden shadow-2xl">
-                <img 
+                <Image
                   src="/selfi.jpg" 
                   alt="프로필 이미지" 
+                  width={320}
+                  height={320}
                   className="w-full h-full object-cover"
+                  priority
                 />
               </div>
               
