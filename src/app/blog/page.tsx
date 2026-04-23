@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Clock, Cloud, Terminal, ChevronDown } from "lucide-react";
+import { ArrowLeft, ExternalLink, Clock, Cloud, Terminal } from "lucide-react";
 import { fetchBlogPosts, BlogPost } from "@/lib/blog";
 
 const categories = ["All", "AWS", "Docker", "Kubernetes", "Linux", "DevOps", "Projects", "Troubleshooting", "Tech"];
@@ -22,7 +22,7 @@ function SkeletonCard() {
   );
 }
 
-function FallbackThumbnail({ category }: { category: string }) {
+function FallbackThumbnail({ category }: Readonly<{ category: string }>) {
   const gradients: Record<string, string> = {
     AWS: "from-orange-500 to-amber-600",
     Docker: "from-blue-500 to-sky-600",
@@ -50,7 +50,7 @@ function FallbackThumbnail({ category }: { category: string }) {
   );
 }
 
-function BlogCard({ post, index }: { post: BlogPost; index: number }) {
+function BlogCard({ post, index }: Readonly<{ post: BlogPost; index: number }>) {
   return (
     <motion.a
       href={post.url}
@@ -87,7 +87,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
   );
 }
 
-function FeaturedCard({ post, index }: { post: BlogPost; index: number }) {
+function FeaturedCard({ post, index }: Readonly<{ post: BlogPost; index: number }>) {
   return (
     <motion.a
       href={post.url}
@@ -158,6 +158,40 @@ export default function BlogPage() {
     if (activeFilter === "All") return !p.featured;
     return p.category === activeFilter && !p.featured;
   });
+  const featuredSection = isLoading ? (
+    <div className="grid md:grid-cols-3 gap-5">
+      {[1, 2, 3].map((i) => <SkeletonCard key={i} />)}
+    </div>
+  ) : error ? (
+    <div className="text-center py-16 text-red-500">
+      {error}
+    </div>
+  ) : (
+    <div className="grid md:grid-cols-3 gap-5">
+      {featuredPosts.map((post, index) => (
+        <FeaturedCard key={post.id} post={post} index={index} />
+      ))}
+    </div>
+  );
+  const recentSection = isLoading ? (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {[1, 2, 3, 4, 5, 6].map((i) => <SkeletonCard key={i} />)}
+    </div>
+  ) : error ? (
+    <div className="text-center py-16 text-red-500">
+      {error}
+    </div>
+  ) : filteredPosts.length > 0 ? (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {filteredPosts.map((post, index) => (
+        <BlogCard key={post.id} post={post} index={index} />
+      ))}
+    </div>
+  ) : (
+    <div className="text-center py-16 text-gray-500">
+      해당 카테고리의 포스트가 없습니다.
+    </div>
+  );
 
   return (
     <main className="min-h-screen bg-white">
@@ -207,21 +241,7 @@ export default function BlogPage() {
         {/* Featured Section */}
         <section style={{ paddingBottom: '48px' }}>
           <h2 className="text-xl font-bold text-black mb-5">Featured Posts</h2>
-          {isLoading ? (
-            <div className="grid md:grid-cols-3 gap-5">
-              {[1, 2, 3].map((i) => <SkeletonCard key={i} />)}
-            </div>
-          ) : error ? (
-            <div className="text-center py-16 text-red-500">
-              {error}
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-3 gap-5">
-              {featuredPosts.map((post, index) => (
-                <FeaturedCard key={post.id} post={post} index={index} />
-              ))}
-            </div>
-          )}
+          {featuredSection}
         </section>
 
         {/* Filter Tabs */}
@@ -230,6 +250,7 @@ export default function BlogPage() {
             {categories.map((category, idx) => (
               <div key={category} className="flex items-center gap-3">
                 <button
+                  type="button"
                   onClick={() => setActiveFilter(category)}
                   className={`text-base font-medium transition-all duration-200 hover:text-blue-400 ${
                     activeFilter === category
@@ -250,25 +271,7 @@ export default function BlogPage() {
         {/* Recent Posts Grid */}
         <section style={{ paddingBottom: '80px' }}>
           <h2 className="text-xl font-bold text-black mb-5">Recent Posts</h2>
-          {isLoading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {[1, 2, 3, 4, 5, 6].map((i) => <SkeletonCard key={i} />)}
-            </div>
-          ) : error ? (
-            <div className="text-center py-16 text-red-500">
-              {error}
-            </div>
-          ) : filteredPosts.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredPosts.map((post, index) => (
-                <BlogCard key={post.id} post={post} index={index} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16 text-gray-500">
-              해당 카테고리의 포스트가 없습니다.
-            </div>
-          )}
+          {recentSection}
         </section>
       </div>
     </main>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Network } from "lucide-react";
+import { ExternalLink, GithubIcon, Network } from "lucide-react";
 
 interface ProjectCardProps {
   title: string;
@@ -21,7 +21,7 @@ export default function ProjectCard({
   githubUrl,
   blogUrl,
   index,
-}: ProjectCardProps) {
+}: Readonly<ProjectCardProps>) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -73,7 +73,7 @@ export default function ProjectCard({
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors duration-200 text-sm font-medium"
           >
-            <Github size={16} />
+            <GithubIcon size={16} />
             코드
           </a>
           <a

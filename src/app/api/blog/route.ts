@@ -9,34 +9,51 @@ interface RSSItem {
   guid: string;
 }
 
+function stripControlCharacters(value: string): string {
+  let sanitized = '';
+  for (const char of value) {
+    const codePoint = char.codePointAt(0) ?? 0;
+    const isAllowedControl = codePoint === 0x09 || codePoint === 0x0a || codePoint === 0x0d;
+    if (codePoint >= 0x20 || isAllowedControl) {
+      sanitized += char;
+    }
+  }
+  return sanitized;
+}
+
+function execMatch(input: string, pattern: RegExp): string | undefined {
+  const match = pattern.exec(input);
+  return match?.[1];
+}
+
 // 읽기 시간 계산 (대략적으로 분당 200단어 기준)
-function calculateReadTime(content: string): number {
+export function calculateReadTime(content: string): number {
   const wordsPerMinute = 200;
   const words = content.replace(/<[^>]*>/g, '').split(/\s+/).length;
   return Math.ceil(words / wordsPerMinute);
 }
 
 // 텍스트만 추출하는 더 강력한 함수
-function extractPlainText(html: string): string {
+export function extractPlainText(html: string): string {
   if (!html) return '';
   
   let text = html;
   
   // 엔티티 변환 (순서 중요: &amp;를 마지막에 처리)
-  text = text.replace(/&lt;/g, '<');
-  text = text.replace(/&gt;/g, '>');
-  text = text.replace(/&quot;/g, '"');
-  text = text.replace(/&#39;/g, "'");
-  text = text.replace(/&apos;/g, "'");
-  text = text.replace(/&nbsp;/g, ' ');
-  text = text.replace(/&hellip;/g, '...');
-  text = text.replace(/&mdash;/g, '—');
-  text = text.replace(/&ndash;/g, '–');
-  text = text.replace(/&rsquo;/g, "'");
-  text = text.replace(/&lsquo;/g, "'");
-  text = text.replace(/&rdquo;/g, '"');
-  text = text.replace(/&ldquo;/g, '"');
-  text = text.replace(/&amp;/g, '&'); // 마지막에 처리
+  text = text.replaceAll('&lt;', '<');
+  text = text.replaceAll('&gt;', '>');
+  text = text.replaceAll('&quot;', '"');
+  text = text.replaceAll('&#39;', "'");
+  text = text.replaceAll('&apos;', "'");
+  text = text.replaceAll('&nbsp;', ' ');
+  text = text.replaceAll('&hellip;', '...');
+  text = text.replaceAll('&mdash;', '—');
+  text = text.replaceAll('&ndash;', '–');
+  text = text.replaceAll('&rsquo;', "'");
+  text = text.replaceAll('&lsquo;', "'");
+  text = text.replaceAll('&rdquo;', '"');
+  text = text.replaceAll('&ldquo;', '"');
+  text = text.replaceAll('&amp;', '&'); // 마지막에 처리
   
   // 숫자 엔티티 제거
   text = text.replace(/&#\d+;/g, '');
@@ -58,7 +75,7 @@ function extractPlainText(html: string): string {
   text = text.replace(/<[^>]*>/g, '');
   
   // 제어 문자 제거
-  text = text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g, '');
+  text = stripControlCharacters(text);
   
   // 연속된 공백과 줄바꿈 정리
   text = text.replace(/\n\s*\n/g, '\n'); // 연속된 줄바꿈을 하나로
@@ -72,7 +89,7 @@ function extractPlainText(html: string): string {
 }
 
 // HTML 태그 제거 및 요약 생성 (완전히 새로운 버전)
-function createExcerpt(content: string, maxLength: number = 150): string {
+export function createExcerpt(content: string, maxLength: number = 150): string {
   const plainText = extractPlainText(content);
   
   if (!plainText || plainText.length < 10) {
@@ -87,13 +104,13 @@ function createExcerpt(content: string, maxLength: number = 150): string {
 }
 
 // 제목 정리 함수 (완전히 새로운 버전)
-function cleanTitle(title: string): string {
+export function cleanTitle(title: string): string {
   const plainTitle = extractPlainText(title);
   return plainTitle || 'Untitled';
 }
 
 // 카테고리 매핑 (티스토리 카테고리를 우리 카테고리로 변환)
-function mapCategory(category: string): string {
+export function mapCategory(category: string): string {
   const categoryMap: Record<string, string> = {
     'AWS': 'AWS',
     'Docker': 'Docker',
@@ -109,7 +126,7 @@ function mapCategory(category: string): string {
 }
 
 // 간단한 XML 파싱 함수
-function parseRSSXML(xmlString: string) {
+export function parseRSSXML(xmlString: string) {
   const items: RSSItem[] = [];
   
   // <item> 태그들을 찾아서 파싱
@@ -117,20 +134,23 @@ function parseRSSXML(xmlString: string) {
   
   if (itemMatches) {
     itemMatches.forEach((itemXML) => {
-      const title = itemXML.match(/<title[^>]*><!\[CDATA\[(.*?)\]\]><\/title>/)?.[1] || 
-                   itemXML.match(/<title[^>]*>(.*?)<\/title>/)?.[1] || 'Untitled';
+      const title = execMatch(itemXML, /<title[^>]*><!\[CDATA\[(.*?)\]\]><\/title>/) ??
+                   execMatch(itemXML, /<title[^>]*>(.*?)<\/title>/) ??
+                   'Untitled';
       
-      const link = itemXML.match(/<link[^>]*>(.*?)<\/link>/)?.[1] || '#';
+      const link = execMatch(itemXML, /<link[^>]*>(.*?)<\/link>/) ?? '#';
       
-      const description = itemXML.match(/<description[^>]*><!\[CDATA\[([\s\S]*?)\]\]><\/description>/)?.[1] || 
-                         itemXML.match(/<description[^>]*>([\s\S]*?)<\/description>/)?.[1] || '';
+      const description = execMatch(itemXML, /<description[^>]*><!\[CDATA\[([\s\S]*?)\]\]><\/description>/) ??
+                         execMatch(itemXML, /<description[^>]*>([\s\S]*?)<\/description>/) ??
+                         '';
       
-      const pubDate = itemXML.match(/<pubDate[^>]*>(.*?)<\/pubDate>/)?.[1] || new Date().toISOString();
+      const pubDate = execMatch(itemXML, /<pubDate[^>]*>(.*?)<\/pubDate>/) ?? new Date().toISOString();
       
-      const category = itemXML.match(/<category[^>]*><!\[CDATA\[(.*?)\]\]><\/category>/)?.[1] || 
-                      itemXML.match(/<category[^>]*>(.*?)<\/category>/)?.[1] || 'Tech';
+      const category = execMatch(itemXML, /<category[^>]*><!\[CDATA\[(.*?)\]\]><\/category>/) ??
+                      execMatch(itemXML, /<category[^>]*>(.*?)<\/category>/) ??
+                      'Tech';
       
-      const guid = itemXML.match(/<guid[^>]*>(.*?)<\/guid>/)?.[1] || link;
+      const guid = execMatch(itemXML, /<guid[^>]*>(.*?)<\/guid>/) ?? link;
       
       items.push({
         title,

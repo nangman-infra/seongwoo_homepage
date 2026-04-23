@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Linkedin, Mail } from "lucide-react";
+import { GithubIcon, LinkedinIcon, Mail } from "lucide-react";
 import { portfolioData } from "@/data/portfolio";
 
 export default function Footer() {
@@ -23,7 +23,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors duration-200"
           >
-            <Github size={20} />
+            <GithubIcon size={20} />
             <span>GitHub</span>
           </a>
 
@@ -33,7 +33,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors duration-200"
           >
-            <Linkedin size={20} />
+            <LinkedinIcon size={20} />
             <span>LinkedIn</span>
           </a>
 
