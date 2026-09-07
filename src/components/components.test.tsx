@@ -8,9 +8,9 @@ describe("seongwoo components", () => {
   it("renders footer contact links", () => {
     render(<Footer />);
 
-    expect(screen.getByText(/Let's Build Something/i)).toBeInTheDocument();
-    expect(screen.getByText("GitHub")).toBeInTheDocument();
-    expect(screen.getByText("LinkedIn")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "GitHub" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "LinkedIn" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Email" })).toBeInTheDocument();
   });
 
   it("renders project card metadata", () => {
@@ -28,6 +28,7 @@ describe("seongwoo components", () => {
 
     expect(screen.getByText("Project")).toBeInTheDocument();
     expect(screen.getByText("AWS")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "코드" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /코드/ })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /블로그/ })).toBeInTheDocument();
   });
 });
