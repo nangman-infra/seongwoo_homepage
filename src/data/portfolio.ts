@@ -64,19 +64,22 @@ export const portfolioData = {
     },
     {
       id: 4,
-      title: "스마트 신호등 시스템",
-      summary: "라즈베리파이와 UART 통신으로 구현한 스마트 신호 제어 시스템.",
-      techStack: ["UART", "Raspberry Pi", "OpenCV", "Python"],
-      architectureDiagram: "신호 제어 시스템 다이어그램",
-      githubUrl: "https://github.com/username/serverless-data",
-      blogUrl: "https://blog.example.com/serverless-data-pipeline",
+      title: "MoA",
+      summary: '경도인지장애 인식 개선 프로젝트\n"나"를 알아가는 시간',
+      techStack: ["Next.js", "Docker"],
+      architectureDiagram: "MoA 아키텍처 다이어그램",
+      architectureImage: "/projects/moa.png",
+      architectureImageWidth: 782,
+      architectureImageHeight: 397,
+      githubUrl: "https://github.com/PublicIsDJ/moa-app.git",
     },
   ],
 
   skills: {
-    "인프라 & 클라우드": ["AWS", "Docker", "Terraform"],
-    "백엔드 & 네트워킹": ["Node.js", "Python", "PostgreSQL", "Load Balancing"],
+    "인프라 & 클라우드": ["AWS", "Docker", "Ansible", "Grafana", "Zabbix"],
+    "백엔드 & 네트워킹": ["Node.js", "Python", "PostgreSQL"],
     "CI/CD & 자동화": ["Git", "GitHub Actions", "Jenkins"],
+    "자격증": ["AWS Certified Cloud Practitioner", "SQLD"],
   },
 
   contact: {

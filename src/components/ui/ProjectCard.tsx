@@ -9,7 +9,7 @@ interface ProjectCardProps {
   architectureImageWidth?: number;
   architectureImageHeight?: number;
   githubUrl?: string;
-  blogUrl: string;
+  blogUrl?: string;
   index: number;
 }
 
@@ -57,6 +57,7 @@ export default function ProjectCard({
           maxWidth: 520,
           margin: "0 auto 32px",
           lineHeight: 1.6,
+          whiteSpace: "pre-line",
         }}
       >
         {summary}
@@ -81,7 +82,7 @@ export default function ProjectCard({
             alt={architectureDiagram}
             width={architectureImageWidth}
             height={architectureImageHeight}
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: "100%", maxWidth: architectureImageWidth, height: "auto" }}
           />
         </div>
       ) : (
@@ -133,9 +134,11 @@ export default function ProjectCard({
             코드 &rsaquo;
           </a>
         )}
-        <a href={blogUrl} target="_blank" rel="noopener noreferrer" className="link-accent">
-          블로그 &rsaquo;
-        </a>
+        {blogUrl && (
+          <a href={blogUrl} target="_blank" rel="noopener noreferrer" className="link-accent">
+            블로그 &rsaquo;
+          </a>
+        )}
       </div>
     </div>
   );
